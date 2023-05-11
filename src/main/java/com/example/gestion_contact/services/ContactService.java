@@ -6,9 +6,12 @@ import com.example.gestion_contact.dto.contacts.ContactDTO;
 import com.example.gestion_contact.dto.contacts.ContactMapper;
 import com.example.gestion_contact.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +31,9 @@ public class ContactService {
         return contactMapper.toContactDTO(contactRepository.save(contactMapper.createContact(contactDTO)));
     }
 
-    public List<ContactDTO> getAllByOrder() {
-        return contactMapper.toContactDTOList(
-                contactRepository.findAllByOrderByNom()
-                        .orElse(null)
-        );
+    public Page<ContactDTO> getAllByOrder(int page, int size) {
+        Page<Contact> contactPage = contactRepository.findAllByOrderByNom(PageRequest.of(page, size));
+        return contactPage.map(contactMapper::toContactDTO);
     }
 
     public void delete(Long id) throws NotFoundException {
@@ -49,8 +50,10 @@ public class ContactService {
         contactRepository.save(contact);
     }
 
-    public ContactDTO searchByNom(String nom) {
-        return contactMapper.toContactDTO(contactRepository.findByNom(nom).orElse(null));
+    public Page<ContactDTO> searchByNom(String nom, int page, int size) {
+        Page<Contact> contactPage = contactRepository.findByNom(nom, PageRequest.of(page, size));
+        System.out.println(contactPage.getTotalElements());
+        return contactPage.map(contactMapper::toContactDTO);
     }
 
     public ContactDTO searchByTel(String tel) {

@@ -4,6 +4,7 @@ import com.example.gestion_contact.models.Contact;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public interface ContactMapper {
     List<ContactDTO> toContactDTOList(List<Contact> contacts);
 
     void updateContactFromDTO(ContactDTO contactDTO, @MappingTarget Contact contact);
+
 
 
 

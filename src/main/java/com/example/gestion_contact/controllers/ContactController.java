@@ -4,6 +4,8 @@ import com.example.gestion_contact.dto.contacts.ContactDTO;
 import com.example.gestion_contact.exceptions.NotFoundException;
 import com.example.gestion_contact.services.ContactService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,20 @@ public class ContactController {
 
 
     @GetMapping
-    public String showContactAllPage(Model model) {
-        model.addAttribute("contacts", contactService.getAllByOrder());
+    public String showContactAllPage(
+            Model model,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "keyword", defaultValue = "") String keyword
+    ) {
+        Page<ContactDTO> contactsPage = keyword.isEmpty()
+                ? contactService.getAllByOrder(page,size)
+                : contactService.searchByNom(keyword, page, size);
+        model.addAttribute("contactsPage", contactsPage);
+        model.addAttribute("pages", new int[contactsPage.getTotalPages()]);
+        model.addAttribute("currentPage" ,page);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("size" ,size);
         return "contacts/all";
     }
 
