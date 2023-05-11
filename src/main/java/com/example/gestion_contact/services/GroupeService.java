@@ -2,10 +2,10 @@ package com.example.gestion_contact.services;
 
 import com.example.gestion_contact.dto.groupes.GroupeDTO;
 import com.example.gestion_contact.dto.groupes.GroupeMapper;
-import com.example.gestion_contact.exceptions.AlreadyExistsException;
-import com.example.gestion_contact.exceptions.NotFoundException;
 import com.example.gestion_contact.models.Groupe;
 import com.example.gestion_contact.repositories.GroupeRepository;
+import com.example.gestion_contact.exceptions.AlreadyExistsException;
+import com.example.gestion_contact.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

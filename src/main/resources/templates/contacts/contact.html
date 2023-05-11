@@ -57,55 +57,55 @@
     <div class="layout-page">
       <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
-          <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Contacts /</span> Créer</h4>
+          <h4 class="fw-bold py-3 mb-4" >Contacts / <span class="text-muted fw-light" th:text="${contact.nom}"></span> </h4>
           <div class="card mb-4">
             <h5 class="card-header">Création de Contact</h5>
             <div class="card-body">
-              <form method="post" th:action="@{/contacts/create}" th:object="${contactDTO}">
+              <form method="post" th:action="@{/contacts/{id}(id=${contact.id})}" th:object="${contact}">
                 <div class="mb-3 row">
                   <label for="nom" class="col-md-2 col-form-label">Nom*</label>
                   <div class="col-md-10">
-                    <input th:field="*{nom}" class="form-control" type="text" id="nom" required/>
+                    <input th:field="*{nom}" class="form-control" type="text" id="nom" required th:value="${contact.nom}"/>
                   </div>
                 </div>
                 <div class="mb-3 row">
-                  <label for="prenom" class="col-md-2 col-form-label">Code*</label>
+                  <label for="prenom" class="col-md-2 col-form-label">Prenom*</label>
                   <div class="col-md-10">
-                    <input th:field="*{prenom}" class="form-control" type="text" id="prenom" required/>
+                    <input th:field="*{prenom}" class="form-control" type="text" id="prenom" required th:value="${contact.prenom}"/>
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="tel1" class="col-md-2 col-form-label">Numèro personnel*</label>
                   <div class="col-md-10">
-                    <input th:field="*{tel1}" class="form-control" type="tel" id="tel1" required/>
+                    <input th:field="*{tel1}" class="form-control" type="tel" id="tel1" required th:value="${contact.tel1}"/>
                   </div>
                 </div>
 
                 <div class="mb-3 row">
                   <label for="tel2" class="col-md-2 col-form-label">Numèro professionnel</label>
                   <div class="col-md-10">
-                    <input th:field="*{tel2}" class="form-control" type="tel" id="tel2"/>
+                    <input th:field="*{tel2}" class="form-control" type="tel" id="tel2" th:value="${contact.tel2}"/>
                   </div>
                 </div>
 
                 <div class="mb-3 row">
                   <label for="adresse" class="col-md-2 col-form-label">Adresse*</label>
                   <div class="col-md-10">
-                    <input th:field="*{adresse}" class="form-control" type="text" id="adresse" required/>
+                    <input th:field="*{adresse}" class="form-control" type="text" id="adresse" required th:value="${contact.adresse}"/>
                   </div>
                 </div>
 
                 <div class="mb-3 row">
                   <label for="emailPer" class="col-md-2 col-form-label">Email personnel*</label>
                   <div class="col-md-10">
-                    <input th:field="*{emailPer}" class="form-control" type="email" id="emailPer" required/>
+                    <input th:field="*{emailPer}" class="form-control" type="email" id="emailPer" required th:value="${contact.emailPer}"/>
                   </div>
                 </div>
 
                 <div class="mb-3 row">
                   <label for="emailPro" class="col-md-2 col-form-label">Email professionnel*</label>
                   <div class="col-md-10">
-                    <input th:field="*{emailPro}" class="form-control" type="email" id="emailPro" required/>
+                    <input th:field="*{emailPro}" class="form-control" type="email" id="emailPro" required th:value="${contact.emailPro}"/>
                   </div>
                 </div>
 
@@ -114,6 +114,7 @@
                   <div class="form-check form-check-inline mt-3" id="genre">
                     <input
                             th:field="*{genre}" th:value="MALE"
+                            th:checked="${contact.genre == 'MALE'}"
                             class="form-check-input"
                             type="radio"
                             name="male"
@@ -124,6 +125,7 @@
                   <div class="form-check form-check-inline">
                     <input
                             th:field="*{genre}" th:value="FEMALE"
+                            th:checked="${contact.genre == 'FEMALE'}"
                             class="form-check-input"
                             type="radio"
                             name="inlineRadioOptions"
@@ -137,7 +139,7 @@
 
 
                 <div class="demo-inline-spacing">
-                  <button type="submit" class="btn btn-primary">Ajouter</button>
+                  <button type="submit" class="btn btn-primary">Modifier</button>
                   <button type="reset" class="btn btn-secondary" >Annuler
                   </button>
                 </div>

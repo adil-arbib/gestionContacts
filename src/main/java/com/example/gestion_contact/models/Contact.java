@@ -38,10 +38,9 @@ public class Contact {
     private String emailPro;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Genre genre;
+    private String genre;
 
-    @ManyToMany(mappedBy = "contacts")
+    @ManyToMany(mappedBy = "contacts", fetch = FetchType.LAZY)
     private Collection<Groupe> groupes;
 
 }

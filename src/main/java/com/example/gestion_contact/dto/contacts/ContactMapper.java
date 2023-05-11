@@ -1,8 +1,6 @@
 package com.example.gestion_contact.dto.contacts;
 
-import com.example.gestion_contact.dto.groupes.GroupeDTO;
 import com.example.gestion_contact.models.Contact;
-import com.example.gestion_contact.models.Groupe;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -14,7 +12,6 @@ public interface ContactMapper {
 
 
     @Mapping(target = "groupes", ignore = true)
-    @Mapping(target = "genre", ignore = true)
     Contact createContact(ContactDTO contactDTO);
 
     @Mapping(target = "groupes", ignore = true)

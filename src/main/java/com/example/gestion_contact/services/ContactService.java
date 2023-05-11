@@ -1,11 +1,10 @@
 package com.example.gestion_contact.services;
 
+import com.example.gestion_contact.models.Contact;
+import com.example.gestion_contact.repositories.ContactRepository;
 import com.example.gestion_contact.dto.contacts.ContactDTO;
 import com.example.gestion_contact.dto.contacts.ContactMapper;
 import com.example.gestion_contact.exceptions.NotFoundException;
-import com.example.gestion_contact.models.Contact;
-import com.example.gestion_contact.models.Genre;
-import com.example.gestion_contact.repositories.ContactRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +19,13 @@ public class ContactService {
     private final ContactMapper contactMapper;
 
 
+    public ContactDTO getById(Long id) throws NotFoundException {
+        return contactMapper.toContactDTO(contactRepository.findById(id).orElseThrow(NotFoundException::new));
+    }
+
+
     public ContactDTO create(ContactDTO contactDTO) {
-        Contact contact = contactMapper.createContact(contactDTO);
-        contact.setGenre(
-                contactDTO.getGenre().equals("male")
-                ? Genre.MALE : Genre.FEMALE
-        );
-        return contactMapper.toContactDTO(contactRepository.save(contact));
+        return contactMapper.toContactDTO(contactRepository.save(contactMapper.createContact(contactDTO)));
     }
 
     public List<ContactDTO> getAllByOrder() {
@@ -65,9 +64,6 @@ public class ContactService {
     public long count() {
         return contactRepository.count();
     }
-
-
-
 
 
 }
