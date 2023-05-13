@@ -55,7 +55,7 @@ public class GroupeController {
 //        groupeService.create(groupeDTO);
         log.info(groupeDTO.toString());
         log.info(selectedContactIds.toString());
-        return "groupes/create";
+        return "redirect:/groupes/create";
     }
 //
 //    @GetMapping("/{id}")

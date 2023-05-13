@@ -70,14 +70,21 @@
                 </div>
 
                 <div class="mb-3 row">
-                  <label class="col-md-2 col-form-label">Contacts*</label>
+                  <label class="col-md-2 col-form-label">Contacts</label>
                   <div class="col-md-10">
-                    <select  th:name="selectedContacts" th:multiple="multiple">
-                      <!-- Use Thymeleaf's th:each attribute to loop through the list of contacts -->
-                      <option  th:each="contact : ${contacts}"
-                              th:value="${contact.id}"
-                              th:text="${contact.nom}"></option>
-                    </select></div>
+                    <input class="form-control" type="search" id="searchInput" placeholder="chercher un contact"/>
+                    <div class="col-md-10 mt-2" style="height: 200px; width: auto; overflow-y: scroll;">
+                      <div style="display: block;" th:each="contact : ${contacts}"  class="contact">
+                        <input
+                                th:value="${contact.id}"
+                                type="checkbox"
+                                class="form-check-input"
+                                name="selectedContacts"
+                        />
+                        <label class="form-check-label" th:text="${contact.nom}"> </label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="demo-inline-spacing">
@@ -97,6 +104,29 @@
   </div>
 
 </div>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const contacts = document.querySelectorAll('.contact');
+
+    searchInput.addEventListener('input', (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+
+        contacts.forEach((contact) => {
+            const label = contact.querySelector('.form-check-label');
+            const name = label.textContent.toLowerCase();
+            const checkbox = contact.querySelector('.form-check-input');
+
+            if (name.includes(searchTerm)) {
+                contact.style.display = 'block';
+                checkbox.disabled = false;
+            } else {
+                contact.style.display = 'none';
+                checkbox.disabled = true;
+            }
+        });
+    });
+</script>
 
 
 <script th:src="@{/js/utils.js}"></script>
