@@ -51,10 +51,8 @@ public class GroupeController {
     }
 
     @PostMapping("/create")
-    public String addGroupe(@ModelAttribute("groupeDTO") GroupeDTO groupeDTO, @RequestParam("selectedContacts") List<Long> selectedContactIds) throws AlreadyExistsException {
-//        groupeService.create(groupeDTO);
-        log.info(groupeDTO.toString());
-        log.info(selectedContactIds.toString());
+    public String addGroupe(@ModelAttribute("groupeDTO") GroupeDTO groupeDTO, @RequestParam("selectedContacts") List<Long> selectedContactIds) throws AlreadyExistsException, NotFoundException {
+        groupeService.create(groupeDTO, selectedContactIds);
         return "redirect:/groupes/create";
     }
 //

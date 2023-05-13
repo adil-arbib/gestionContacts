@@ -5,6 +5,7 @@ import com.example.gestion_contact.dto.groupes.GroupeDTO;
 import com.example.gestion_contact.dto.groupes.GroupeMapper;
 import com.example.gestion_contact.models.Contact;
 import com.example.gestion_contact.models.Groupe;
+import com.example.gestion_contact.repositories.ContactRepository;
 import com.example.gestion_contact.repositories.GroupeRepository;
 import com.example.gestion_contact.exceptions.AlreadyExistsException;
 import com.example.gestion_contact.exceptions.NotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class GroupeService {
 
     private final GroupeRepository groupeRepository;
+    private final ContactRepository contactRepository;
 
     private final GroupeMapper groupeMapper;
 
@@ -30,13 +33,20 @@ public class GroupeService {
     }
 
 
-    public GroupeDTO create(GroupeDTO groupeDTO) throws AlreadyExistsException {
+    public GroupeDTO create(GroupeDTO groupeDTO, List<Long> contactsIds) throws AlreadyExistsException, NotFoundException {
         if (groupeRepository.existsByNom(groupeDTO.getNom()))
             throw new AlreadyExistsException();
 
-        return groupeMapper.toGroupeDTO(
-                groupeRepository.save(groupeMapper.createGroupe(groupeDTO))
-        );
+        Groupe groupe = groupeMapper.createGroupe(groupeDTO);
+        if(!contactsIds.isEmpty()) {
+            List<Contact> contacts = new ArrayList<>();
+            for(Long contactId : contactsIds) {
+                Contact contact = contactRepository.findById(contactId).orElseThrow(NotFoundException::new);
+                contacts.add(contact);
+            }
+            groupe.setContacts(contacts);
+        }
+        return groupeMapper.toGroupeDTO(groupeRepository.save(groupe));
     }
     public void update(GroupeDTO groupeDTO) throws NotFoundException {
         Groupe groupe = groupeRepository.findById(groupeDTO.getId())
