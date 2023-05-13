@@ -18,7 +18,7 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
 
     Page<Contact> findAllByOrderByNom(PageRequest pageRequest);
 
-    Page<Contact> findByNom(String nom, Pageable pageable);
+    Page<Contact> findByNomContains(String keyword, Pageable pageable);
 
     Optional<Contact> findByTel1OrTel2(String tel1, String tel2);
 

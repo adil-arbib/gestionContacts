@@ -31,6 +31,10 @@ public class ContactService {
         return contactMapper.toContactDTO(contactRepository.save(contactMapper.createContact(contactDTO)));
     }
 
+    public List<ContactDTO> getAll() {
+        return contactMapper.toContactDTOList(contactRepository.findAll());
+    }
+
     public Page<ContactDTO> getAllByOrder(int page, int size) {
         Page<Contact> contactPage = contactRepository.findAllByOrderByNom(PageRequest.of(page, size));
         return contactPage.map(contactMapper::toContactDTO);
@@ -51,7 +55,7 @@ public class ContactService {
     }
 
     public Page<ContactDTO> searchByNom(String nom, int page, int size) {
-        Page<Contact> contactPage = contactRepository.findByNom(nom, PageRequest.of(page, size));
+        Page<Contact> contactPage = contactRepository.findByNomContains(nom, PageRequest.of(page, size));
         System.out.println(contactPage.getTotalElements());
         return contactPage.map(contactMapper::toContactDTO);
     }
@@ -66,6 +70,11 @@ public class ContactService {
 
     public long count() {
         return contactRepository.count();
+    }
+
+
+    public Page<ContactDTO> getContactPage(int page, int size, String keyword) {
+        return keyword.isEmpty() ? getAllByOrder(page, size) : searchByNom(keyword, page, size);
     }
 
 

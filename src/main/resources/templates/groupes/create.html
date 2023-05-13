@@ -56,52 +56,42 @@
     <!-- Layout container -->
     <div class="layout-page">
       <div class="content-wrapper">
-        <!-- Content -->
-
         <div class="container-xxl flex-grow-1 container-p-y">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold py-3 mb-0"><span class="text-muted fw-light">Groupes /</span> Tous </h4>
-            <a th:href="@{/groupes/create}" class="btn btn-primary">Ajouter</a>
-          </div>
-          <div class="card">
-            <h5 class="card-header">Tous les groupes</h5>
-            <div class="table-responsive text-nowrap">
-              <table class="table">
-                <thead>
-                <tr>
-                  <th>Nom</th>
-                  <th>Nombre de contacts</th>
-                  <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody class="table-border-bottom-0">
-                <tr th:each="groupe : ${groupesPage.content}">
-                  <td th:text="${groupe.nom}"></td>
-                  <td th:text="${groupe.size}"></td>
-                  <td>
-                    <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                              data-bs-toggle="dropdown">
-                        <i class="bx bx-dots-vertical-rounded"></i>
-                      </button>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="javascript:void(0);"
-                        ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                        >
-                        <a class="dropdown-item" href="javascript:void(0);"
-                        ><i class="bx bx-trash me-1"></i> Delete</a
-                        >
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+          <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Groupes /</span> Créer</h4>
+          <div class="card mb-4">
+            <h5 class="card-header">Création de groupe</h5>
+            <div class="card-body">
+              <form method="post" th:action="@{/groupes/create}" th:object="${groupeDTO}">
+                <div class="mb-3 row">
+                  <label for="nom" class="col-md-2 col-form-label">Nom*</label>
+                  <div class="col-md-10">
+                    <input th:field="*{nom}" class="form-control" type="text" id="nom" required/>
+                  </div>
+                </div>
+
+                <div class="mb-3 row">
+                  <label class="col-md-2 col-form-label">Contacts*</label>
+                  <div class="col-md-10">
+                    <select  th:name="selectedContacts" th:multiple="multiple">
+                      <!-- Use Thymeleaf's th:each attribute to loop through the list of contacts -->
+                      <option  th:each="contact : ${contacts}"
+                              th:value="${contact.id}"
+                              th:text="${contact.nom}"></option>
+                    </select></div>
+                </div>
+
+                <div class="demo-inline-spacing">
+                  <button type="submit" class="btn btn-primary">Ajouter</button>
+                  <button type="reset" class="btn btn-secondary">Annuler
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-
       </div>
+
+
     </div>
 
   </div>
@@ -109,6 +99,7 @@
 </div>
 
 
+<script th:src="@{/js/utils.js}"></script>
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
 <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>

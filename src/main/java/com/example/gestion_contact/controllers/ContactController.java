@@ -29,13 +29,12 @@ public class ContactController {
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "keyword", defaultValue = "") String keyword
     ) {
-        Page<ContactDTO> contactsPage = keyword.isEmpty()
-                ? contactService.getAllByOrder(page,size)
-                : contactService.searchByNom(keyword, page, size);
+        Page<ContactDTO> contactsPage = contactService.getContactPage(page, size, keyword);
         model.addAttribute("contactsPage", contactsPage);
         model.addAttribute("pages", new int[contactsPage.getTotalPages()]);
         model.addAttribute("currentPage" ,page);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("max", contactsPage.getTotalPages() -1 );
         model.addAttribute("size" ,size);
         return "contacts/all";
     }
@@ -69,9 +68,14 @@ public class ContactController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) throws NotFoundException {
+    public String delete(
+            @PathVariable Long id,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "keyword", defaultValue = "") String keyword
+    ) throws NotFoundException {
         contactService.delete(id);
-        return "redirect:/contacts";
+        return "redirect:/contacts?page="+page+"&size="+size+"&keyword="+keyword;
     }
 
 

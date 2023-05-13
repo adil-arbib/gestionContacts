@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+  />
+
+  <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+
+  <meta name="description" content=""/>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}"/>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+          rel="stylesheet"
+  />
+
+  <!-- Icons. Uncomment required icon fonts -->
+  <link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}"/>
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" th:href="@{/assets/vendor/css/core.css}" class="template-customizer-core-css"/>
+  <link rel="stylesheet" th:href="@{/assets/vendor/css/theme-default.css}" class="template-customizer-theme-css"/>
+  <link rel="stylesheet" th:href="@{/assets/css/demo.css}"/>
+
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}"/>
+
+  <link rel="stylesheet" th:href="@{/assets/vendor/libs/apex-charts/apex-charts.css}"/>
+
+  <!-- Page CSS -->
+
+  <!-- Helpers -->
+  <script th:src="@{/assets/vendor/js/helpers.js}"></script>
+
+  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+  <script th:src="@{/assets/js/config.js}"></script>
+</head>
+<body>
+
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <!-- Menu -->
+
+
+    <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
+
+    <!-- Layout container -->
+    <div class="layout-page">
+      <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <h4 class="fw-bold py-3 mb-4" >Contacts / <span class="text-muted fw-light" th:text="${contact.nom}"></span> </h4>
+          <div class="card mb-4">
+            <h5 class="card-header">Création de Contact</h5>
+            <div class="card-body">
+              <form method="post" th:action="@{/contacts/{id}(id=${contact.id})}" th:object="${contact}">
+                <div class="mb-3 row">
+                  <label for="nom" class="col-md-2 col-form-label">Nom*</label>
+                  <div class="col-md-10">
+                    <input th:field="*{nom}" class="form-control" type="text" id="nom" required th:value="${contact.nom}"/>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="prenom" class="col-md-2 col-form-label">Prenom*</label>
+                  <div class="col-md-10">
+                    <input th:field="*{prenom}" class="form-control" type="text" id="prenom" required th:value="${contact.prenom}"/>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="tel1" class="col-md-2 col-form-label">Numèro personnel*</label>
+                  <div class="col-md-10">
+                    <input th:field="*{tel1}" class="form-control" type="tel" id="tel1" required th:value="${contact.tel1}"/>
+                  </div>
+                </div>
+
+                <div class="mb-3 row">
+                  <label for="tel2" class="col-md-2 col-form-label">Numèro professionnel</label>
+                  <div class="col-md-10">
+                    <input th:field="*{tel2}" class="form-control" type="tel" id="tel2" th:value="${contact.tel2}"/>
+                  </div>
+                </div>
+
+                <div class="mb-3 row">
+                  <label for="adresse" class="col-md-2 col-form-label">Adresse*</label>
+                  <div class="col-md-10">
+                    <input th:field="*{adresse}" class="form-control" type="text" id="adresse" required th:value="${contact.adresse}"/>
+                  </div>
+                </div>
+
+                <div class="mb-3 row">
+                  <label for="emailPer" class="col-md-2 col-form-label">Email personnel*</label>
+                  <div class="col-md-10">
+                    <input th:field="*{emailPer}" class="form-control" type="email" id="emailPer" required th:value="${contact.emailPer}"/>
+                  </div>
+                </div>
+
+                <div class="mb-3 row">
+                  <label for="emailPro" class="col-md-2 col-form-label">Email professionnel*</label>
+                  <div class="col-md-10">
+                    <input th:field="*{emailPro}" class="form-control" type="email" id="emailPro" required th:value="${contact.emailPro}"/>
+                  </div>
+                </div>
+
+                <div class="col-md">
+                  <label for="genre" class="col-md-2 col-form-label">Genre*</label>
+                  <div class="form-check form-check-inline mt-3" id="genre">
+                    <input
+                            th:field="*{genre}" th:value="MALE"
+                            th:checked="${contact.genre == 'MALE'}"
+                            class="form-check-input"
+                            type="radio"
+                            name="male"
+                            id="inlineRadio1"
+                    />
+                    <label class="form-check-label" for="inlineRadio1">Male</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                            th:field="*{genre}" th:value="FEMALE"
+                            th:checked="${contact.genre == 'FEMALE'}"
+                            class="form-check-input"
+                            type="radio"
+                            name="inlineRadioOptions"
+                            id="inlineRadio2"
+                    />
+                    <label class="form-check-label" for="inlineRadio2">Female</label>
+                  </div>
+                </div>
+
+
+
+
+                <div class="demo-inline-spacing">
+                  <button type="submit" class="btn btn-primary">Modifier</button>
+                  <button type="reset" class="btn btn-secondary" >Annuler
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<script th:src="@{/js/utils.js}"></script>
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+
+<script th:src="@{/assets/vendor/js/menu.js}"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+<script th:src="@{/assets/vendor/libs/apex-charts/apexcharts.js}"></script>
+
+<!-- Main JS -->
+<script th:src="@{/assets/js/main.js}"></script>
+
+<!-- Page JS -->
+<script th:src="@{/assets/js/dashboards-analytics.js}"></script>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+</body>
+</html>
