@@ -38,7 +38,7 @@ public class GroupeService {
             throw new AlreadyExistsException();
 
         Groupe groupe = groupeMapper.createGroupe(groupeDTO);
-        if(!contactsIds.isEmpty()) {
+        if(contactsIds != null && !contactsIds.isEmpty()) {
             List<Contact> contacts = new ArrayList<>();
             for(Long contactId : contactsIds) {
                 Contact contact = contactRepository.findById(contactId).orElseThrow(NotFoundException::new);
