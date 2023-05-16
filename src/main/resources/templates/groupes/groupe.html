@@ -57,93 +57,108 @@
     <div class="layout-page">
       <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
-          <h4 class="fw-bold py-3 mb-4" >Contacts / <span class="text-muted fw-light" th:text="${contact.nom}"></span> </h4>
+          <h4 class="fw-bold py-3 mb-4">Groupes / <span class="text-muted fw-light" th:text="${groupe.nom}"></span></h4>
           <div class="card mb-4">
-            <h5 class="card-header">Création de Contact</h5>
+            <h5 class="card-header">Modification de groupe</h5>
             <div class="card-body">
-              <form method="post" th:action="@{/contacts/{id}(id=${contact.id})}" th:object="${contact}">
+              <form method="post" th:action="@{/groupes/{id}(id=${groupe.id})}" th:object="${groupe}">
+
                 <div class="mb-3 row">
                   <label for="nom" class="col-md-2 col-form-label">Nom*</label>
                   <div class="col-md-10">
-                    <input th:field="*{nom}" class="form-control" type="text" id="nom" required th:value="${contact.nom}"/>
+                    <input th:field="*{nom}" class="form-control" type="text" id="nom" required
+                           th:value="${groupe.nom}"/>
                   </div>
                 </div>
-                <div class="mb-3 row">
-                  <label for="prenom" class="col-md-2 col-form-label">Prenom*</label>
-                  <div class="col-md-10">
-                    <input th:field="*{prenom}" class="form-control" type="text" id="prenom" required th:value="${contact.prenom}"/>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <label for="tel1" class="col-md-2 col-form-label">Numèro personnel*</label>
-                  <div class="col-md-10">
-                    <input th:field="*{tel1}" class="form-control" type="tel" id="tel1" required th:value="${contact.tel1}"/>
-                  </div>
-                </div>
-
-                <div class="mb-3 row">
-                  <label for="tel2" class="col-md-2 col-form-label">Numèro professionnel</label>
-                  <div class="col-md-10">
-                    <input th:field="*{tel2}" class="form-control" type="tel" id="tel2" th:value="${contact.tel2}"/>
-                  </div>
-                </div>
-
-                <div class="mb-3 row">
-                  <label for="adresse" class="col-md-2 col-form-label">Adresse*</label>
-                  <div class="col-md-10">
-                    <input th:field="*{adresse}" class="form-control" type="text" id="adresse" required th:value="${contact.adresse}"/>
-                  </div>
-                </div>
-
-                <div class="mb-3 row">
-                  <label for="emailPer" class="col-md-2 col-form-label">Email personnel*</label>
-                  <div class="col-md-10">
-                    <input th:field="*{emailPer}" class="form-control" type="email" id="emailPer" required th:value="${contact.emailPer}"/>
-                  </div>
-                </div>
-
-                <div class="mb-3 row">
-                  <label for="emailPro" class="col-md-2 col-form-label">Email professionnel*</label>
-                  <div class="col-md-10">
-                    <input th:field="*{emailPro}" class="form-control" type="email" id="emailPro" required th:value="${contact.emailPro}"/>
-                  </div>
-                </div>
-
-                <div class="col-md">
-                  <label for="genre" class="col-md-2 col-form-label">Genre*</label>
-                  <div class="form-check form-check-inline mt-3" id="genre">
-                    <input
-                            th:field="*{genre}" th:value="MALE"
-                            th:checked="${contact.genre == 'MALE'}"
-                            class="form-check-input"
-                            type="radio"
-                            name="male"
-                            id="inlineRadio1"
-                    />
-                    <label class="form-check-label" for="inlineRadio1">Male</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                            th:field="*{genre}" th:value="FEMALE"
-                            th:checked="${contact.genre == 'FEMALE'}"
-                            class="form-check-input"
-                            type="radio"
-                            name="inlineRadioOptions"
-                            id="inlineRadio2"
-                    />
-                    <label class="form-check-label" for="inlineRadio2">Female</label>
-                  </div>
-                </div>
-
-
-
-
                 <div class="demo-inline-spacing">
                   <button type="submit" class="btn btn-primary">Modifier</button>
-                  <button type="reset" class="btn btn-secondary" >Annuler
+                  <button type="reset" class="btn btn-secondary">Annuler
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <h5 class="card-header">Les contacts</h5>
+            <div class="card-body">
+              <div class="mt-3" style="text-align: right;">
+                <!-- Button trigger modal -->
+                <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalCenter"
+                >
+                  Ajouter
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalCenterTitle">Ajouter des contacts</h5>
+                        <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                        ></button>
+                      </div>
+                      <form method="post" th:action="@{/groupes/{groupId}/contacts/add(groupId=${groupe.id})}">
+                        <div class="modal-body">
+                          <input class="form-control" type="search" id="searchInput" placeholder="chercher un contact"/>
+                          <div style="height: 200px; width: auto; overflow-y: scroll; text-align: left">
+                            <div style="display: block;" th:each="contact : ${restContacts}" class="contact">
+                              <input
+                                      th:value="${contact.id}"
+                                      type="checkbox"
+                                      class="form-check-input"
+                                      name="selectedContacts"
+                              />
+                              <label class="form-check-label" th:text="${contact.nom}"> </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Fermer
+                          </button>
+                          <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <table class="table mt-3">
+                <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th>Prenom</th>
+                  <th>Numèro personnel</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                <tr th:each="contact : ${groupe.contacts}">
+                  <td th:text="${contact.nom}"></td>
+                  <td th:text="${contact.prenom}"></td>
+                  <td th:text="${contact.tel1}"></td>
+                  <td>
+                    <form method="post" th:action="@{/groupes/{groupId}/contacts/remove(groupId=${groupe.id})}"
+                          th:object="${contact}">
+                      <input type="hidden" name="contactId" th:value="${contact.id}"/>
+                      <button type="submit" class="dropdown-item"
+                              th:onclick="return confirmDelete()"
+                      ><i class="bx bx-trash me-1"></i></button
+                      >
+                    </form>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -156,6 +171,34 @@
 
 </div>
 
+<script>
+    function confirmDelete() {
+        return confirm("confirmer");
+    }
+</script>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const contacts = document.querySelectorAll('.contact');
+
+    searchInput.addEventListener('input', (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+
+        contacts.forEach((contact) => {
+            const label = contact.querySelector('.form-check-label');
+            const name = label.textContent.toLowerCase();
+            const checkbox = contact.querySelector('.form-check-input');
+
+            if (name.includes(searchTerm)) {
+                contact.style.display = 'block';
+                checkbox.disabled = false;
+            } else {
+                contact.style.display = 'none';
+                checkbox.disabled = true;
+            }
+        });
+    });
+</script>
 
 
 <script th:src="@{/js/utils.js}"></script>

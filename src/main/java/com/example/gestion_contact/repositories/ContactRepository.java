@@ -25,6 +25,10 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
     @Query("SELECT c FROM Contact c WHERE SOUNDEX(c.nom) = SOUNDEX(:nom)")
     Optional<List<Contact>> findByNomSoundex(@Param("nom") String nom);
 
+    List<Contact> findByIdNotIn(List<Long> ids);
+
+    List<Contact> findByIdIn(List<Long> ids);
+
 
 
 }

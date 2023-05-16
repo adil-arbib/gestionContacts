@@ -107,19 +107,13 @@
                   <td th:text="${contact.emailPro}"></td>
                   <td th:text="${contact.genre}"></td>
                   <td>
-                    <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                              data-bs-toggle="dropdown">
-                        <i class="bx bx-dots-vertical-rounded"></i>
-                      </button>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" th:href="@{/contacts/{id}(id=${contact.id})}"
-                        ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                        >
-                        <a class="dropdown-item" th:href="@{/contacts/delete/{id}(id=${contact.id}, page = 0, size = ${size}, keyword = ${keyword})}" th:onclick="return confirmDelete()"
-                        ><i class="bx bx-trash me-1"></i> Delete</a
-                        >
-                      </div>
+                    <div style="display: flex; flex-direction: row;">
+                      <a th:href="@{/contacts/{id}(id=${contact.id})}"
+                      ><i class="bx bx-edit-alt"></i></a>
+                      <a th:href="@{/contacts/delete/{id}(id=${contact.id}, page = 0, size = ${size}, keyword = ${keyword})}"
+                              th:onclick="return confirmDelete()"
+                      > <i class="bx bx-trash"></i>
+                      </a>
                     </div>
                   </td>
                 </tr>
@@ -135,15 +129,19 @@
                       ></a>
                     </li>
                     <li class="page-item prev">
-                      <a class="page-link" th:href="@{/contacts(page = ${currentPage == 0 ? 0 : currentPage - 1}, size = ${size}, keyword = ${keyword})}"
+                      <a class="page-link"
+                         th:href="@{/contacts(page = ${currentPage == 0 ? 0 : currentPage - 1}, size = ${size}, keyword = ${keyword})}"
                       ><i class="tf-icon bx bx-chevron-left"></i
                       ></a>
                     </li>
-                    <li th:class="${status.index == currentPage ? 'page-item active' : 'page-item' }" th:each="page,status : ${pages}">
-                      <a class="page-link"  th:text="${status.index}" th:href="@{/contacts(page = ${status.index}, size = ${size}, keyword = ${keyword})}"></a>
+                    <li th:class="${status.index == currentPage ? 'page-item active' : 'page-item' }"
+                        th:each="page,status : ${pages}">
+                      <a class="page-link" th:text="${status.index}"
+                         th:href="@{/contacts(page = ${status.index}, size = ${size}, keyword = ${keyword})}"></a>
                     </li>
                     <li class="page-item next">
-                      <a class="page-link" th:href="@{/contacts(page = ${currentPage == max  ?  max  : currentPage + 1}, size = ${size}, keyword = ${keyword})}"
+                      <a class="page-link"
+                         th:href="@{/contacts(page = ${currentPage == max  ?  max  : currentPage + 1}, size = ${size}, keyword = ${keyword})}"
                       ><i class="tf-icon bx bx-chevron-right"></i
                       ></a>
                     </li>
@@ -172,7 +170,6 @@
         return confirm("confirmer");
     }
 </script>
-
 
 
 <!-- Core JS -->

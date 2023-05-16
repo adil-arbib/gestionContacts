@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -55,30 +56,49 @@ public class GroupeController {
         groupeService.create(groupeDTO, selectedContactIds);
         return "redirect:/groupes/create";
     }
-//
-//    @GetMapping("/{id}")
-//    public String showGroupePage(@PathVariable Long id, Model model) throws NotFoundException {
-//        GroupeDTO groupeDTO = groupeService.getById(id);
-//        model.addAttribute("groupe", groupeDTO);
-//        return "groupes/groupe";
-//    }
-//
-//    @PostMapping("/{id}")
-//    public String updateContact(@ModelAttribute("groupe") GroupeDTO groupeDTO) throws NotFoundException {
-//        groupeService.update(groupeDTO);
-//        return "redirect:/groupes";
-//    }
-//
-//    @GetMapping("/delete/{id}")
-//    public String delete(
-//            @PathVariable Long id,
-//            @RequestParam(name = "page", defaultValue = "0") int page,
-//            @RequestParam(name = "size", defaultValue = "10") int size,
-//            @RequestParam(name = "keyword", defaultValue = "") String keyword
-//    ) throws NotFoundException {
-//        groupeService.delete(id);
-//        return "redirect:/groupes?page="+page+"&size="+size+"&keyword="+keyword;
-//    }
+
+    @GetMapping("/{id}")
+    public String showGroupePage(@PathVariable Long id, Model model) throws NotFoundException {
+        GroupeDTO groupeDTO = groupeService.getById(id);
+        model.addAttribute("groupe", groupeDTO);
+        model.addAttribute("restContacts", groupeService.getRestContacts(id));
+        return "groupes/groupe";
+    }
+
+    @PostMapping("/{id}")
+    public String updateContact(@ModelAttribute("groupe") GroupeDTO groupeDTO) throws NotFoundException {
+        groupeService.update(groupeDTO);
+        return "redirect:/groupes";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(
+            @PathVariable Long id,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "keyword", defaultValue = "") String keyword
+    ) throws NotFoundException {
+        groupeService.delete(id);
+        return "redirect:/groupes?page="+page+"&size="+size+"&keyword="+keyword;
+    }
+
+    @PostMapping("/{group-id}/contacts/remove")
+    public String removeContactFromGroup(
+            @PathVariable("group-id") Long groupId,
+            @RequestParam("contactId") Long contactId
+            ) throws NotFoundException {
+        groupeService.removeContact(groupId, contactId);
+        return "redirect:/groupes/"+groupId;
+    }
+
+    @PostMapping("/{group-id}/contacts/add")
+    public String addContactsToGroup(
+            @PathVariable("group-id") Long groupId,
+            @RequestParam(name = "selectedContacts") List<Long> selectedContactIds
+            ) throws NotFoundException {
+        groupeService.addContactsToGroup(groupId, selectedContactIds);
+        return "redirect:/groupes/"+groupId;
+    }
 
 
 
